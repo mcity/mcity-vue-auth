@@ -1,0 +1,19 @@
+{
+  "name": "vue-common-files",
+  "version": "1.0.0",
+  "description": "Shared vue files for Mcity projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcity/vue-common-files.git"
+  },
+  "author": "Brandon Lyons",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcity/vue-common-files/issues"
+  },
+  "homepage": "https://github.com/mcity/vue-common-files#readme"
+}
