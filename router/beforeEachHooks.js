@@ -19,6 +19,7 @@ export function checkRequiresAuth (to, from, next) {
       next()
     } else {
       location.href = this.$store.getters.getAuthURL
+      next(false)
     }
   } else {
     next()
