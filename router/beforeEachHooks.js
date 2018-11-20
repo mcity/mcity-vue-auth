@@ -1,5 +1,5 @@
 export function saveToken (to, from, next) {
-  if (to.matched.some(route => route.name === 'OverviewAuth')) {
+  if (to.matched.some(route => route.path === 'authorized')) {
     const params = this.queryString.parse(to.hash)
     if (params.access_token && params.expires_in) {
       setTimeout(() => {
