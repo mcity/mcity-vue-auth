@@ -1,5 +1,4 @@
 export function saveToken (to, from, next) {
-  console.log('top token')
   if (to.matched.some(route => route.meta.authorized)) {
     const params = this.queryString.parse(to.hash)
     if (params.access_token && params.expires_in) {
@@ -15,18 +14,14 @@ export function saveToken (to, from, next) {
 }
 
 export function checkRequiresAuth (to, from, next) {
-  console.log('top')
   if (to.matched.some(route => route.meta.requiresAuth)) {
     if (this.$store.getters.getAccessToken) {
-      console.log('test')
       next()
     } else {
-      console.log('here')
       location.href = this.$store.getters.getAuthURL
       next(false)
     }
   } else {
-    console.log('else')
     next()
   }
 }
