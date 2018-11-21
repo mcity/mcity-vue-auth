@@ -3,6 +3,9 @@ import queryString from 'query-string'
 import { mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
+  render() {
+    return this.$slots.default
+  },
   data () {
     return {
       params: null

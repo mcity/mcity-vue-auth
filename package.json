@@ -1,6 +1,6 @@
 {
   "name": "vue-common-files",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
   "scripts": {
