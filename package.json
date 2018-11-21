@@ -1,6 +1,6 @@
 {
   "name": "vue-common-files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/mcity/vue-common-files/issues"
   },
-  "homepage": "https://github.com/mcity/vue-common-files#readme"
+  "homepage": "https://github.com/mcity/vue-common-files#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "query-string": "^6.2.0"
+  }
 }
