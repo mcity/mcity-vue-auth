@@ -33,7 +33,8 @@ export default {
       'setUserRoles',
       'setIsUserAdmin',
       'setUser',
-      'setIsUserLoading'
+      'setIsUserLoading',
+      'setShowIframe'
     ]),
     extractToken () {
       this.params = queryString.parse(this.$route.hash)
