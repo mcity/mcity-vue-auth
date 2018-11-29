@@ -1,6 +1,6 @@
 {
-  "name": "vue-common-files",
-  "version": "1.0.6",
+  "name": "mcity-vue-auth",
+  "version": "1.1.0",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mcity/vue-common-files.git"
+    "url": "git+https://github.com/mcity/mcity-vue-auth.git"
   },
   "author": "Brandon Lyons",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mcity/vue-common-files/issues"
+    "url": "https://github.com/mcity/mcity-vue-auth/issues"
   },
-  "homepage": "https://github.com/mcity/vue-common-files#readme",
+  "homepage": "https://github.com/mcity/mcity-vue-auth#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "query-string": "^6.2.0"
