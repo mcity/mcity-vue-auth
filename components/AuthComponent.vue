@@ -3,12 +3,6 @@ import queryString from 'query-string'
 import { mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
-  props: {
-    adminRole: {
-      required: true,
-      type: String
-    }
-  },
   render() {
     return this.$slots.default
   },
@@ -29,6 +23,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$store)
     this.extractToken()
     if (this.accessToken) {
         this.fetchRoles()
@@ -68,7 +63,7 @@ export default {
       axios.get(`${this.url}api/roles`)
         .then(response => {
           const roles = response.data.roles
-          const adminStatus = roles.includes(this.adminRole)
+          const adminStatus = roles.includes(this.$store.state.adminRole)
           this.setUserRoles(roles)
           this.setIsUserAdmin(adminStatus)
         })
