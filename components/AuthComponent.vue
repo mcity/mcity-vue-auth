@@ -23,7 +23,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store)
     this.extractToken()
     if (this.accessToken) {
         this.fetchRoles()
