@@ -28,7 +28,14 @@ export default {
         this.fetchRoles()
         this.fetchUser()
     }
-    this.$router.push('/')
+    if (localStorage.getItem('destination')) {
+      let destination = localStorage.getItem('destination')
+      localStorage.removeItem('destination')
+      this.$router.push(destination)
+    }
+    else {
+      this.$router.push('/')
+    }
   },
   methods: {
     ...mapMutations([
