@@ -10,6 +10,7 @@ Common vue files used across Mcity projects.
   ```
   <auth-refresh
     v-if="getShowIframe"
+    adminRole="PROJECTADMIN"
   >
   </auth-refresh>
   ```
