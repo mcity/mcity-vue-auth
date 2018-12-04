@@ -2,6 +2,19 @@
 Common vue files used across Mcity projects.
 
 # Usage
+## Env Setup
+  - Create file `.env.local` if it does not already exist.
+  - Add the following variables to this file.
+  ```
+  VUE_APP_API_URL=http://localhost:5000
+  VUE_APP_MIXPANEL_TOKEN=value
+  VUE_APP_OAUTH_KEY=value
+  VUE_APP_HOST=http://localhost:8080
+  VUE_APP_OAUTH_SERVER=https://keys.um.city/
+  VUE_APP_REDIRECT_URI=http://localhost:8080/authorized
+  VUE_APP_OAUTH_SCOPE=email+roles
+  ```
+
 ## App Setup
   - After the default router view in the `App.vue` template, add a named router view to `App.vue` with `<router-view name="auth"/>`
   - Import `authRefresh` component with 

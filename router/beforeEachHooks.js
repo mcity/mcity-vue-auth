@@ -3,7 +3,7 @@ export function checkRequiresAuth (to, from, next) {
     if (this.$store.getters.getAccessToken) {
       next()
     } else {
-      localStorage.setItem('destination', to.fullPath)
+      localStorage.setItem(this.$store.getters.getOAuthState, to.fullPath)
       location.href = this.$store.getters.getAuthURL
     }
   } else {

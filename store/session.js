@@ -1,3 +1,5 @@
+import { uuidv4 } from '../utils'
+
 const state = {
   user: {},
   userRoles: null,
@@ -7,7 +9,7 @@ const state = {
   redirectURI: process.env.VUE_APP_REDIRECT_URI,
   silentRedirectURI: `${process.env.VUE_APP_HOST}/refresh.html`,
   oAuthScope: process.env.VUE_APP_OAUTH_SCOPE,
-  oAuthState: process.env.VUE_APP_OAUTH_STATE,
+  oAuthState: uuidv4(),
   iframeRef: null,
   showIframe: false
 }

@@ -1,6 +1,6 @@
 {
   "name": "mcity-vue-auth",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
   "scripts": {
