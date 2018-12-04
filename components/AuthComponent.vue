@@ -20,9 +20,6 @@ export default {
     },
     accessToken () {
       return this.$store.getters.getAccessToken
-    },
-    OAuthState () {
-      return this.$store.getters.getOAuthState
     }
   },
   mounted () {
@@ -31,9 +28,9 @@ export default {
         this.fetchRoles()
         this.fetchUser()
     }
-    if (localStorage.getItem(this.OAuthState)) {
-      let destination = localStorage.getItem(this.OAuthState)
-      localStorage.removeItem(this.OAuthState)
+    if (localStorage.getItem(this.params.state)) {
+      let destination = localStorage.getItem(this.params.state)
+      localStorage.removeItem(this.params.state)
       this.$router.push(destination)
     }
     else {
