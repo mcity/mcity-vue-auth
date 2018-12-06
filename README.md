@@ -61,3 +61,8 @@ Common vue files used across Mcity projects.
     },
   }
   ```
+
+# Adding Changes
+## Babel Transpilation
+  - After making code changes, rerun babel by running `npm run build`
+  - Make sure to commit these built files.
