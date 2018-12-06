@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted () {
-    this.extractToken()
+    this.saveToken()
     if (this.accessToken) {
         this.fetchRoles()
         this.fetchUser()
@@ -46,7 +46,7 @@ export default {
       'setIsUserLoading',
       'setShowIframe'
     ]),
-    extractToken () {
+    saveToken () {
       this.params = queryString.parse(this.$route.hash)
       this.$store.commit('setAccessToken', this.params.access_token)
     },
