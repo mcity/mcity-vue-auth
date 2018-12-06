@@ -1,1 +1,1 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.uuidv4=uuidv4;function uuidv4(){return"10000000-1000-4000-8000-100000000000".replace(/[018]/g,function(a){return(a^crypto.getRandomValues(new Uint8Array(1))[0]&15>>a/4).toString(16)})}
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.uuidv4=uuidv4;function uuidv4(){var a=window.crypto||window.msCrypto;return"10000000-1000-4000-8000-100000000000".replace(/[018]/g,function(b){return(b^a.getRandomValues(new Uint8Array(1))[0]&15>>b/4).toString(16)})}
