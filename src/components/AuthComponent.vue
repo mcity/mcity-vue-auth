@@ -25,17 +25,19 @@ export default {
   mounted () {
     this.saveToken()
     if (this.accessToken) {
-        this.fetchRoles()
-        this.fetchUser()
+      Promise.all([this.fetchRoles(), this.fetchUser()])
+        .then(() => {
+          if (localStorage.getItem(this.params.state)) {
+            let destination = localStorage.getItem(this.params.state)
+            localStorage.removeItem(this.params.state)
+            this.$router.push(destination)
+          }
+          else {
+            this.$router.push('/')
+          }
+        })
     }
-    if (localStorage.getItem(this.params.state)) {
-      let destination = localStorage.getItem(this.params.state)
-      localStorage.removeItem(this.params.state)
-      this.$router.push(destination)
-    }
-    else {
-      this.$router.push('/')
-    }
+    
   },
   methods: {
     ...mapMutations([
@@ -59,7 +61,7 @@ export default {
       }
     },
     fetchRoles () {
-      axios.get(`${this.url}api/roles`)
+      return axios.get(`${this.url}api/roles`)
         .then(response => {
           const roles = response.data.roles
           const adminStatus = roles.includes(this.$store.state.adminRole)
@@ -69,7 +71,7 @@ export default {
       .catch(e => this.logError(e))
     },
     fetchUser () {
-      axios.get(`${this.url}api/me`)
+      return axios.get(`${this.url}api/me`)
       .then(response => {
         this.setUser(response.data)
         this.setIsUserLoading(false)
