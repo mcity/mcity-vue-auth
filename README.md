@@ -6,7 +6,6 @@ Common vue files used across Mcity projects.
   - Create file `.env.local` if it does not already exist.
   - Add the following variables to this file.
   ```
-  VUE_APP_API_URL=http://localhost:5000
   VUE_APP_MIXPANEL_TOKEN=value
   VUE_APP_OAUTH_KEY=value
   VUE_APP_HOST=http://localhost:8080
