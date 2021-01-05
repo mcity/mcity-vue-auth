@@ -19,7 +19,7 @@
   "homepage": "https://github.com/mcity/mcity-vue-auth#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "browserslist": "^4.6.2",
     "caniuse-lite": "^1.0.30000974",
     "query-string": "^5.1.1"
