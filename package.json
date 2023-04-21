@@ -23,7 +23,9 @@
     "browserslist": "^4.16.1",
     "caniuse-lite": "^1.0.30001173",
     "core-js": "^2.6.12",
-    "query-string": "^5.1.1"
+    "pinia": "^2.0.35",
+    "query-string": "^5.1.1",
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
