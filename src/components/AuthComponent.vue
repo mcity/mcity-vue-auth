@@ -2,8 +2,8 @@
 import queryString from 'query-string'
 import { defineComponent, onMounted, ref, render } from 'vue'
 import { useAuthStore } from '../store/session'
-import { computed } from '@vue/reactivity'
-import { mapGetters, mapMutations } from 'vuex'
+// import { computed } from '@vue/reactivity'
+// import { mapGetters, mapMutations } from 'vuex'
 import axios from 'axios'
 
 export default defineComponent({

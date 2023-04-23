@@ -9,6 +9,7 @@
 </template>
 
 <script>
+
 import { defineComponent, onMounted, ref } from 'vue'
 import queryString from 'query-string'
 import { computed } from '@vue/reactivity'

@@ -1,5 +1,6 @@
 import { uuidv4 } from '../utils'
-import { defineStore } from 'pinia'
+import { createPinia, defineStore, setActivePinia } from 'pinia'
+setActivePinia(createPinia())
 
 export const useAuthStore = defineStore('authStore', {
   state: () => {
