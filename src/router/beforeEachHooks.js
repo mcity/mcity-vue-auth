@@ -1,10 +1,13 @@
+import { useAuthStore } from "../store/session"
+
 export function checkRequiresAuth (to, from, next) {
+  const authStore = useAuthStore()
   if (to.matched.some(route => route.meta.requiresAuth)) {
-    if (this.$store.getters.getAccessToken) {
+    if (authStore.accessToken) {
       next()
     } else {
-      localStorage.setItem(this.$store.getters.getOAuthState, to.fullPath)
-      location.href = this.$store.getters.getAuthURL
+      localStorage.setItem(authStore.oAuthState, to.fullPath)
+      location.href = authStore.getAuthURL()
     }
   } else {
     next()
