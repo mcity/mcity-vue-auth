@@ -4,18 +4,22 @@ import { defineComponent, onMounted, ref, render } from 'vue'
 import { useAuthStore } from '../store/session'
 // import { computed } from '@vue/reactivity'
 // import { mapGetters, mapMutations } from 'vuex'
-import axios from 'axios'
+import { version } from 'vue'
+
+console.log(version)
 
 export default defineComponent({
   name: 'AuthComponent',
-  setup() {
+  async setup(props, context) {
+    debugger
     const authStore = useAuthStore()
     const user = ref(authStore.user)
     const url = ref(authStore.oAuthServer)
     const accessToken = ref(authStore.accessToken)
     const params = ref(null)
-
+    console.log('AUTHCOMP')
     function saveToken() {
+      console.log('SAVE ACCESS TOKEN:', params.value)
       params.value = queryString.parse(this.$route.hash)
       setAccessToken(params.value.access_token)
     }
@@ -44,6 +48,7 @@ export default defineComponent({
     function fetchUser() {
       return axios.get(`${url.value}api/me`)
       .then(response => {
+        console.log('AUTH RES', response.data)
         this.setUser(response.data)
         setIsUserLoading(false)
         if (process.env.NODE_ENV === 'production') {
@@ -51,7 +56,7 @@ export default defineComponent({
           this.$ma.identify({userId: user.value.username})
         }
       })
-      .catch(e => this.logError(e))
+      .catch(e => {console.log('ERROR AUTH', e)})
     }
 
     function setAccessToken() {
@@ -74,6 +79,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      console.log('MOUNTED')
       saveToken()
       if (accessToken) {
         Promise.all([fetchRoles(), fetchUser()])
@@ -89,16 +95,8 @@ export default defineComponent({
           })
       }
     })
-
-    return {
-      authStore,
-      user,
-      url,
-      accessToken
-    }
-  },
-  render() {
-    return this.$slots.default
+    // console.log('RENDER', this.$slots.default)
+    return () => context.slots.default
   }
 })
 

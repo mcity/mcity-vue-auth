@@ -59,9 +59,10 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      console.log('IFRAME')
       iframeRef = document.getElementById('auth-iframe')
-      url = getRefreshAuthURL
-      pollIframe(getSilentRedirect, iframeRef)
+      url.value = getRefreshAuthURL.value
+      pollIframe(getSilentRedirect.value, iframeRef.value)
         .then(({access_token, expires_in}) => {
           setAccessToken(access_token)
           setShowIframe(false)
