@@ -1,55 +1,72 @@
+<template>
+  <slot />
+</template>
+
 <script>
 import queryString from 'query-string'
-import { defineComponent, onMounted, ref, render } from 'vue'
+import { defineComponent, getCurrentInstance, onMounted, ref, render } from 'vue'
 import { useAuthStore } from '../store/session'
+import {useRoute, useRouter} from 'vue-router'
+import axios from 'axios'
 // import { computed } from '@vue/reactivity'
 // import { mapGetters, mapMutations } from 'vuex'
-import { version } from 'vue'
-
-console.log(version)
 
 export default defineComponent({
   name: 'AuthComponent',
-  async setup(props, context) {
-    debugger
+  props: {
+    route: Object,
+    router: Object,
+    $props: String
+  },
+  setup(props, context) {
+    console.log({props})
+    const router = props.router
+    const route = props.route
+    const testRoute = useRoute().fullPath
+    console.log({testRoute})
+    const instance = getCurrentInstance()
     const authStore = useAuthStore()
     const user = ref(authStore.user)
     const url = ref(authStore.oAuthServer)
     const accessToken = ref(authStore.accessToken)
     const params = ref(null)
-    console.log('AUTHCOMP')
+
     function saveToken() {
-      console.log('SAVE ACCESS TOKEN:', params.value)
-      params.value = queryString.parse(this.$route.hash)
-      setAccessToken(params.value.access_token)
+      // console.log('SAVE ACCESS TOKEN ROUTE:', route)
+      params.value = queryString.parse(route.hash)
+      authStore.accessToken = params.value.access_token
     }
 
     // TODO: Method not being used. could remove
     function scheduleRefresh() {
       if (this.params.access_token && this.params.expires_in) {
         setTimeout(() => {
-          setShowIframe(true)
+          authStore.showIframe = true
+          // setShowIframe(true)
           // Sets timeout value to 10 mins before expires_in
         }, (params.expires_in - 10 * 60) * 1000)
       }
     }
 
     function fetchRoles() {
+      console.log('URL', url.value)
       return axios.get(`${url.value}api/roles`)
         .then(response => {
+          console.log('INSIDE')
           const roles = response.data.roles
           const adminStatus = roles.includes(authStore.adminRole)
-          setUserRoles(roles)
+          authStore.userRoles = roles
+          // setUserRoles(roles)
           setIsUserAdmin(adminStatus)
         })
-      .catch(e => this.logError(e)) //logError Does not exists
+      .catch(e => console.error('Fetch Roles Error:', e)) //logError Does not exists
     }
 
     function fetchUser() {
       return axios.get(`${url.value}api/me`)
       .then(response => {
-        console.log('AUTH RES', response.data)
-        this.setUser(response.data)
+        authStore.user = response.data
+        // setUser(response.data)
         setIsUserLoading(false)
         if (process.env.NODE_ENV === 'production') {
           this.$ma.setUserProperties({name: user.value.username})
@@ -59,27 +76,24 @@ export default defineComponent({
       .catch(e => {console.log('ERROR AUTH', e)})
     }
 
-    function setAccessToken() {
-      this.authStore.setAccessToken()
+    // function setUserRoles(roles) {
+    //   authStore.setUserRoles(roles)
+    // }
+    function setIsUserAdmin(isAdmin) {
+      authStore.setIsUserAdmin(isAdmin)
     }
-    function setUserRoles() {
-      this.authStore.setUserRoles()
+    // function setUser(user) {
+    //   authStore.setUser(user)
+    // }
+    function setIsUserLoading(loadingStatus) {
+      authStore.setIsUserLoading(loadingStatus)
     }
-    function setIsUserAdmin() {
-      this.authStore.setIsUserAdmin()
+    function setShowIframe(showIframe) {
+      authStore.setShowIframe(showIframe)
     }
-    function setUser() {
-      this.authStore.setUser()
-    }
-    function setIsUserLoading() {
-      this.authStore.setIsUserLoading()
-    }
-    function setShowIframe() {
-      this.authStore.setShowIframe()
-    }
+    // render(() => context.slots)
 
     onMounted(() => {
-      console.log('MOUNTED')
       saveToken()
       if (accessToken) {
         Promise.all([fetchRoles(), fetchUser()])
@@ -87,101 +101,18 @@ export default defineComponent({
             if (localStorage.getItem(params.value.state)) {
               let destination = localStorage.getItem(params.value.state)
               localStorage.removeItem(params.value.state)
-              this.$router.push(destination) //TODO: need  $router here
+              router.push(destination) //TODO: need  $router here
             }
             else {
-              this.$router.push('/')
+              router.push('/')
             }
           })
       }
     })
-    // console.log('RENDER', this.$slots.default)
-    return () => context.slots.default
+
   }
 })
 
-// const old =  {
-//   render() {
-//     return this.$slots.default
-//   },
-//   data () {
-//     return {
-//       params: null
-//     }
-//   },
-//   computed: {
-//     ...mapGetters([
-//       'getUser'
-//     ]),
-//     url () {
-//       return this.$store.getters.getOAuthServer
-//     },
-//     accessToken () {
-//       return this.$store.getters.getAccessToken
-//     }
-//   },
-//   mounted () {
-//     this.saveToken()
-//     if (this.accessToken) {
-//       Promise.all([this.fetchRoles(), this.fetchUser()])
-//         .then(() => {
-//           if (localStorage.getItem(this.params.state)) {
-//             let destination = localStorage.getItem(this.params.state)
-//             localStorage.removeItem(this.params.state)
-//             this.$router.push(destination)
-//           }
-//           else {
-//             this.$router.push('/')
-//           }
-//         })
-//     }
-    
-//   },
-//   methods: {
-//     ...mapMutations([
-//       'logError',
-//       'setUserRoles',
-//       'setIsUserAdmin',
-//       'setUser',
-//       'setIsUserLoading',
-//       'setShowIframe'
-//     ]),
-//     saveToken () {
-//       this.params = queryString.parse(this.$route.hash)
-//       this.$store.commit('setAccessToken', this.params.access_token)
-//     },
-//     scheduleRefresh () {
-//       if (this.params.access_token && this.params.expires_in) {
-//         setTimeout(() => {
-//           this.$store.commit('setShowIframe', true)
-//           // Sets timeout value to 10 mins before expires_in
-//         }, (params.expires_in - 10 * 60) * 1000)
-//       }
-//     },
-//     fetchRoles () {
-//       return axios.get(`${this.url}api/roles`)
-//         .then(response => {
-//           const roles = response.data.roles
-//           const adminStatus = roles.includes(this.$store.state.adminRole)
-//           this.setUserRoles(roles)
-//           this.setIsUserAdmin(adminStatus)
-//         })
-//       .catch(e => this.logError(e))
-//     },
-//     fetchUser () {
-//       return axios.get(`${this.url}api/me`)
-//       .then(response => {
-//         this.setUser(response.data)
-//         this.setIsUserLoading(false)
-//         if (process.env.NODE_ENV === 'production') {
-//           this.$ma.setUserProperties({name: this.getUser.username})
-//           this.$ma.identify({userId: this.getUser.username})
-//         }
-//       })
-//       .catch(e => this.logError(e))
-//     }
-//   }
-// }
 </script>
 
 <style>

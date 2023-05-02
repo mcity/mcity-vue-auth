@@ -25,7 +25,8 @@
     "core-js": "^2.6.12",
     "pinia": "^2.0.35",
     "query-string": "^5.1.1",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

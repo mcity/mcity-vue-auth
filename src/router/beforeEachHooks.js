@@ -1,9 +1,10 @@
 import { useAuthStore } from "../store/session"
 
+
 export function checkRequiresAuth (to, from, next) {
-  // const authStore = useAuthStore()
-  // this.$store = useAuthStore()
-  console.log('ROUTE', to)
+  const authStore = useAuthStore()
+  authStore.hash = to.hash
+  console.log('ROUTE', to.hash)
   if (to.matched.some(route => route.meta.requiresAuth)) {
     
     if (this.$store.session.accessToken) {
