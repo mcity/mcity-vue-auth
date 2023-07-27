@@ -11,7 +11,8 @@ const state = {
   oAuthScope: process.env.VUE_APP_OAUTH_SCOPE,
   oAuthState: uuidv4(),
   iframeRef: null,
-  showIframe: false
+  showIframe: false,
+  unapprovedURL: process.env.VUE_APP_UNAPPROVED_URL
 }
 
 export const mutations = {
@@ -40,6 +41,7 @@ const getters = {
   getAuthURL: ({ oAuthServer, oAuthKey, redirectURI, oAuthScope, oAuthState } = state) => {
     return `${oAuthServer}oauth/authorize?response_type=token&client_id=${oAuthKey}&redirect_uri=${redirectURI}&scope=${oAuthScope}&state=${oAuthState}`
   },
+  getUnapprovedURL: state => state.unapprovedURL,
   getOAuthState: state => state.oAuthState,
   getOAuthServer: state => state.oAuthServer,
   getRefreshAuthURL: ({ oAuthServer, oAuthKey, silentRedirectURI, oAuthScope, oAuthState } = state) => {

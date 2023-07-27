@@ -10,3 +10,13 @@ export function checkRequiresAuth (to, from, next) {
     next()
   }
 }
+
+export function checkRequiresApproved(to, from, next) {
+  if (to.matched.some(route => route.meta.requiresApproved)) {
+    if (this.$store.getters.getUserRoles.includes('UNAPPROVED')) {
+      location.href = this.$store.getters.getUnapprovedURL
+    } else {
+      next()
+    }
+  }
+}
