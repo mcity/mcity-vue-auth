@@ -2,7 +2,7 @@ import { uuidv4 } from '../utils'
 
 const state = {
   user: {},
-  userRoles: process.env.VUE_APP_TESTING === 'true' ? ['MCITY'] : null,
+  userRoles: process.env.VUE_APP_TESTING === 'true' ? ['MCITY'] : [],
   accessToken: process.env.VUE_APP_TESTING === 'true' ? 'test' : null,
   oAuthServer: process.env.VUE_APP_OAUTH_SERVER,
   oAuthKey: process.env.VUE_APP_OAUTH_KEY,
