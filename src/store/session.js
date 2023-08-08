@@ -36,7 +36,7 @@ export const mutations = {
 const getters = {
   getUser: state => state.user,
   getFullName: state => `${state.user.first_name} ${state.user.last_name}`,
-  getUserRoles: state => state.userRoles,
+  getUserRoles: state => !state.userRoles ? [] : state.userRoles,
   getAccessToken: state => state.accessToken,
   getAuthURL: ({ oAuthServer, oAuthKey, redirectURI, oAuthScope, oAuthState } = state) => {
     return `${oAuthServer}oauth/authorize?response_type=token&client_id=${oAuthKey}&redirect_uri=${redirectURI}&scope=${oAuthScope}&state=${oAuthState}`
