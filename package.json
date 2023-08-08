@@ -1,6 +1,6 @@
 {
   "name": "@Mcity/mcity-vue-auth",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "author": "Brandon Lyons & Tyler Worman",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
