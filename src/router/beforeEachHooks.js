@@ -13,6 +13,8 @@ export function checkRequiresAuth (to, from, next) {
 
 export function checkRequiresApproved(to, from, next) {
   if (to.matched.some(route => route.meta.requiresApproved)) {
+    console.log('checking if user is approved')
+    console.log(this.$store.getters.getUserRoles)
     if (this.$store.getters.getUserRoles.includes('UNAPPROVED') || this.$store.getters.getUserRoles.includes('BANNED')) {
       location.href = this.$store.getters.getUnapprovedURL
     } else {

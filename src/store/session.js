@@ -20,6 +20,9 @@ export const mutations = {
     state.user = payload
   },
   setUserRoles (state, payload) {
+    console.log('setting user roles')
+    console.log(state.userRoles)
+    console.log(payload)
     state.userRoles = payload
   },
   setAccessToken (state, payload) {
@@ -36,7 +39,11 @@ export const mutations = {
 const getters = {
   getUser: state => state.user,
   getFullName: state => `${state.user.first_name} ${state.user.last_name}`,
-  getUserRoles: state => !state.userRoles ? [] : state.userRoles,
+  getUserRoles: state => {
+    console.log('getting user roles')
+    console.log(state.userRoles)
+    return !state.userRoles ? [] : state.userRoles
+  },
   getAccessToken: state => state.accessToken,
   getAuthURL: ({ oAuthServer, oAuthKey, redirectURI, oAuthScope, oAuthState } = state) => {
     return `${oAuthServer}oauth/authorize?response_type=token&client_id=${oAuthKey}&redirect_uri=${redirectURI}&scope=${oAuthScope}&state=${oAuthState}`
