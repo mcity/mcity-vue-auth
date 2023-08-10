@@ -20,9 +20,6 @@ export const mutations = {
     state.user = payload
   },
   setUserRoles (state, payload) {
-    console.log('setting user roles')
-    console.log(state.userRoles)
-    console.log(payload)
     state.userRoles = payload
   },
   setAccessToken (state, payload) {
@@ -40,8 +37,6 @@ const getters = {
   getUser: state => state.user,
   getFullName: state => `${state.user.first_name} ${state.user.last_name}`,
   getUserRoles: state => {
-    console.log('getting user roles')
-    console.log(state.userRoles)
     return !state.userRoles ? [] : state.userRoles
   },
   getAccessToken: state => state.accessToken,
