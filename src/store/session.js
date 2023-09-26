@@ -16,19 +16,12 @@ export const useSessionStore = defineStore("session", {
     showIframe: false,
     unapprovedURL: process.env.VUE_APP_UNAPPROVED_URL,
   }),
-  /* 
-    some getters can be replaced by accessing the value directly via sessionStore.[state_key]
-    pinia supports accessing state this way. The getters that can be replaced will be marked
-    with a 'TODO: DONT USE'. Access directly. Any code that uses this style of getters, will
-    have to be updated.
-  */
+
   getters: {
-    getUser: (state) => state.user, // TODO: DONT USE
     getFullName: (state) => `${state.user.first_name} ${state.user.last_name}`,
     getUserRoles: (state) => {
       return !state.userRoles ? [] : state.userRoles;
     },
-    getAccessToken: (state) => state.accessToken, // TODO: DONT USE
     getAuthURL: ({
       oAuthServer,
       oAuthKey,
@@ -38,9 +31,6 @@ export const useSessionStore = defineStore("session", {
     } = state) => {
       return `${oAuthServer}oauth/authorize?response_type=token&client_id=${oAuthKey}&redirect_uri=${redirectURI}&scope=${oAuthScope}&state=${oAuthState}`;
     },
-    getUnapprovedURL: (state) => state.unapprovedURL, // TODO: DONT USE
-    getOAuthState: (state) => state.oAuthState, // TODO: DONT USE
-    getOAuthServer: (state) => state.oAuthServer, // TODO: DONT USE
     getRefreshAuthURL: ({
       oAuthServer,
       oAuthKey,
@@ -50,9 +40,6 @@ export const useSessionStore = defineStore("session", {
     } = state) => {
       return `${oAuthServer}oauth/authorize?response_type=token&client_id=${oAuthKey}&redirect_uri=${silentRedirectURI}&scope=${oAuthScope}&state=${oAuthState}`;
     },
-    getIframeRef: (state) => state.iframeRef, // TODO: DONT USE
-    getShowIframe: (state) => state.showIframe, // TODO: DONT USE
-    getSilentRedirect: (state) => state.silentRedirectURI, // TODO: DONT USE
   },
   actions: {
     setUser(payload) {
