@@ -1,3 +1,7 @@
+<template>
+  <slot />
+</template>
+
 <script setup>
 import queryString from "query-string";
 import { useSessionStore } from "../store/session.js";
