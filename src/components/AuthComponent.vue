@@ -49,7 +49,7 @@ function fetchUser() {
     .then((response) => {
       sessionStore.setUser(response.data);
       sessionStore.setIsUserLoading(false);
-      if (process.env.NODE_ENV === "production") {
+      if (import.meta.env.NODE_ENV === "production") {
         this.$ma.setUserProperties({ name: this.getUser.username });
         this.$ma.identify({ userId: this.getUser.username });
       }

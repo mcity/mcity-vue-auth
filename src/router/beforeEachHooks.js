@@ -1,24 +1,25 @@
-import { useSessionStore } from "../store/session";
+import useSessionStore from "../store/session";
 
-export function checkRequiresAuth(to, from, next) {
+const checkRequiresAuth = function (to, from, next) {
   const sessionStore = useSessionStore();
   if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (sessionStore.accessToken) {
+    if ($store.accessToken) {
       if (to.matched.some((route) => route.meta.requiresApproved)) {
         if (
-          sessionStore.getUserRoles.includes("UNAPPROVED") ||
-          sessionStore.getUserRoles.includes("BANNED")
+          $store.getUserRoles.includes("UNAPPROVED") ||
+          $store.getUserRoles.includes("BANNED")
         ) {
-          location.href = sessionStore.unapprovedURL;
+          location.href = $store.unapprovedURL;
         } else {
           next();
         }
       }
     } else {
-      localStorage.setItem(sessionStore.oAuthState, to.fullPath);
-      location.href = sessionStore.getAuthURL;
+      localStorage.setItem($store.oAuthState, to.fullPath);
+      location.href = $store.getAuthURL;
     }
   } else {
     next();
   }
-}
+};
+export default checkRequiresAuth;

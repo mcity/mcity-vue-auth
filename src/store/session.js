@@ -1,20 +1,20 @@
 import { defineStore } from "pinia";
 import { uuidv4 } from "../utils";
 
-export const useSessionStore = defineStore("session", {
+const useSessionStore = defineStore("session", {
   state: () => ({
     user: {},
-    userRoles: process.env.VUE_APP_TESTING === "true" ? ["MCITY"] : [],
-    accessToken: process.env.VUE_APP_TESTING === "true" ? "test" : null,
-    oAuthServer: process.env.VUE_APP_OAUTH_SERVER,
-    oAuthKey: process.env.VUE_APP_OAUTH_KEY,
-    redirectURI: process.env.VUE_APP_REDIRECT_URI,
-    silentRedirectURI: `${process.env.VUE_APP_HOST}/refresh.html`,
-    oAuthScope: process.env.VUE_APP_OAUTH_SCOPE,
+    userRoles: import.meta.env.VITE_TESTING === "true" ? ["MCITY"] : [],
+    accessToken: import.meta.env.VITE_TESTING === "true" ? "test" : null,
+    oAuthServer: import.meta.env.VITE_OAUTH_SERVER,
+    oAuthKey: import.meta.env.VITE_OAUTH_KEY,
+    redirectURI: import.meta.env.VITE_REDIRECT_URI,
+    silentRedirectURI: `${import.meta.env.VITE_HOST}/refresh.html`,
+    oAuthScope: import.meta.env.VITE_OAUTH_SCOPE,
     oAuthState: uuidv4(),
     iframeRef: null,
     showIframe: false,
-    unapprovedURL: process.env.VUE_APP_UNAPPROVED_URL,
+    unapprovedURL: import.meta.env.VITE_UNAPPROVED_URL,
   }),
 
   getters: {
@@ -59,3 +59,5 @@ export const useSessionStore = defineStore("session", {
     },
   },
 });
+
+export default useSessionStore;

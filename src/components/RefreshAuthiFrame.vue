@@ -5,7 +5,7 @@
 <script setup>
 import queryString from "query-string";
 import { computed, onMounted, ref } from "vue";
-import { useSessionStore } from "../store/session";
+import useSessionStore from "../store/session";
 
 const sessionStore = useSessionStore();
 const iframeRef = ref(null);
