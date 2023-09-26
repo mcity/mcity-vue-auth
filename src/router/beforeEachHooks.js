@@ -1,27 +1,16 @@
-import { useAuthStore } from "../store/session"
+import { useUserStore } from "src/stores/userStore";
 
+export function checkRequiresAuth(to, from, next) {
+  const userStore = useUserStore();
 
-export function checkRequiresAuth (to, from, next) {
-  const authStore = useAuthStore()
-  authStore.hash = to.hash
-  console.log('ROUTE', to.hash)
-  if (to.matched.some(route => route.meta.requiresAuth)) {
-    
-    if (this.$store.session.accessToken) {
-      console.log('STORE: accessToken', this.$store.session.accessToken)
-      next()
+  if (to.meta.requiresAuth && to.meta.authorized === undefined) {
+    if (userStore.session.accessToken) {
+      next();
     } else {
-      console.log('STORE: else accessToken', this.$store.session)
-      localStorage.setItem(this.$store.session.oAuthState, to.fullPath)
-      
-      console.log('STORAGE ITEM', localStorage.getItem(this.$store.session.oAuthState))
-      console.log('LOCATION:', this.$store.getAuthURL)
-
-      location.href = this.$store.getAuthURL
-      console.log('DONE')
+      localStorage.setItem(userStore.session.oAuthState, to.fullPath);
+      location.href = userStore.getAuthURL;
     }
   } else {
-    console.log('STORE: else', this.$store.session)
-    next()
+    next();
   }
 }
