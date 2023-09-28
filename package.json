@@ -1,6 +1,6 @@
 {
-  "name": "@mcity/mcity-vue-auth-pinia",
-  "version": "1.0",
+  "name": "@Mcity/mcity-vue-auth",
+  "version": "1.4.7",
   "author": "Brandon Lyons & Tyler Worman",
   "description": "Shared vue files for Mcity projects",
   "main": "index.js",
@@ -10,23 +10,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mcity/mcity-vue-auth-pinia.git"
+    "url": "git+https://github.com/mcity/mcity-vue-auth.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mcity/mcity-vue-auth-pinia/issues"
+    "url": "https://github.com/mcity/mcity-vue-auth/issues"
   },
-  "homepage": "https://github.com/mcity/mcity-vue-auth-pinia#readme",
+  "homepage": "https://github.com/mcity/mcity-vue-auth#readme",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "axios": "^1.5.0",
+    "axios": "^0.21.1",
     "browserslist": "^4.16.1",
     "caniuse-lite": "^1.0.30001173",
     "core-js": "^2.6.12",
-    "pinia": "^2.1.6",
-    "query-string": "^5.1.1",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "query-string": "^5.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

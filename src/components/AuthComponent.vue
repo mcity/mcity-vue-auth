@@ -1,83 +1,91 @@
-<template>
-  <slot />
-</template>
-
-<script setup>
-import queryString from "query-string";
-import useSessionStore from "../store/session.js";
-import axios from "axios";
-import { computed, onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-
-const $route = useRoute();
-const $router = useRouter();
-const params = ref(null);
-const sessionStore = useSessionStore();
-const user = computed(() => sessionStore.user);
-const url = computed(() => sessionStore.oAuthServer);
-const accessToken = computed(() => sessionStore.accessToken);
-function saveToken() {
-  params.value = queryString.parse($route.hash);
-  sessionStore.setAccessToken(params.value.access_token);
-}
-
-function scheduleRefresh() {
-  if (params.value.access_token && params.value.expires_in) {
-    setTimeout(() => {
-      sessionStore.setShowIframe(true);
-      // Sets timeout value to 10 mins before expires_in
-    }, (params.value.expires_in - 10 * 60) * 1000);
-  }
-}
-
-function fetchRoles() {
-  return axios
-    .get(`${url.value}api/roles`, {
-      headers: { Authorization: `Bearer ${accessToken.value}` },
-    })
-    .then((response) => {
-      const roles = response.data.roles;
-      // const adminStatus = roles.includes(sessionStore.adminRole);
-      sessionStore.setUserRoles(roles);
-      // sessionStore.setIsUserAdmin(adminStatus);
-    })
-    .catch((e) => console.log({ e }));
-}
-
-function fetchUser() {
-  return axios
-    .get(`${url.value}api/me`, {
-      headers: { Authorization: `Bearer ${accessToken.value}` },
-    })
-    .then((response) => {
-      sessionStore.setUser(response.data);
-      sessionStore.setIsUserLoading(false);
-      if (import.meta.env.NODE_ENV === "production") {
-        this.$ma.setUserProperties({ name: this.getUser.username });
-        this.$ma.identify({ userId: this.getUser.username });
+<script>
+import queryString from 'query-string'
+import { mapGetters, mapMutations } from 'vuex'
+import axios from 'axios'
+export default {
+  render() {
+    return this.$slots.default
+  },
+  data () {
+    return {
+      params: null
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getUser'
+    ]),
+    url () {
+      return this.$store.getters.getOAuthServer
+    },
+    accessToken () {
+      return this.$store.getters.getAccessToken
+    }
+  },
+  mounted () {
+    this.saveToken()
+    if (this.accessToken) {
+      Promise.all([this.fetchRoles(), this.fetchUser()])
+        .then(() => {
+          if (localStorage.getItem(this.params.state)) {
+            let destination = localStorage.getItem(this.params.state)
+            localStorage.removeItem(this.params.state)
+            this.$router.push(destination)
+          }
+          else {
+            this.$router.push('/')
+          }
+        })
+    }
+    
+  },
+  methods: {
+    ...mapMutations([
+      'logError',
+      'setUserRoles',
+      'setIsUserAdmin',
+      'setUser',
+      'setIsUserLoading',
+      'setShowIframe'
+    ]),
+    saveToken () {
+      this.params = queryString.parse(this.$route.hash)
+      this.$store.commit('setAccessToken', this.params.access_token)
+    },
+    scheduleRefresh () {
+      if (this.params.access_token && this.params.expires_in) {
+        setTimeout(() => {
+          this.$store.commit('setShowIframe', true)
+          // Sets timeout value to 10 mins before expires_in
+        }, (params.expires_in - 10 * 60) * 1000)
       }
-    })
-    .catch((e) => console.log({ e }));
-}
-
-onMounted(() => {
-  saveToken();
-  if (sessionStore.accessToken) {
-    Promise.all([fetchRoles(), fetchUser()])
-      .then(() => {
-        if (localStorage.getItem(params.value.state)) {
-          let destination = localStorage.getItem(params.value.state);
-          localStorage.removeItem(params.value.state);
-          $router.push(destination);
-        } else {
-          $router.push("/");
+    },
+    fetchRoles () {
+      return axios.get(`${this.url}api/roles`)
+        .then(response => {
+          const roles = response.data.roles
+          const adminStatus = roles.includes(this.$store.state.adminRole)
+          this.setUserRoles(roles)
+          this.setIsUserAdmin(adminStatus)
+        })
+      .catch(e => this.logError(e))
+    },
+    fetchUser () {
+      return axios.get(`${this.url}api/me`)
+      .then(response => {
+        this.setUser(response.data)
+        this.setIsUserLoading(false)
+        if (process.env.NODE_ENV === 'production') {
+          this.$ma.setUserProperties({name: this.getUser.username})
+          this.$ma.identify({userId: this.getUser.username})
         }
       })
-      .catch((err) => {
-        console.error("FETCH USER AND ROLES ERROR:", err);
-      });
+      .catch(e => this.logError(e))
+    }
   }
-});
+}
 </script>
 
-<style></style>
+<style>
+
+</style>
