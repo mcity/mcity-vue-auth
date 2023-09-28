@@ -1,18 +1,25 @@
-export function checkRequiresAuth (to, from, next) {
-  if (to.matched.some(route => route.meta.requiresAuth)) {
-    if (this.$store.getters.getAccessToken) {
-      if (to.matched.some(route => route.meta.requiresApproved)) {
-        if (this.$store.getters.getUserRoles.includes('UNAPPROVED') || this.$store.getters.getUserRoles.includes('BANNED')) {
-          location.href = this.$store.getters.getUnapprovedURL
+import useSessionStore from "../store/session.js";
+export function checkRequiresAuth(to, from, next) {
+  const $store = useSessionStore();
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if ($store.accessToken) {
+      if (to.matched.some((route) => route.meta.requiresApproved)) {
+        if (
+          $store.getUserRoles.includes("UNAPPROVED") ||
+          $store.getUserRoles.includes("BANNED")
+        ) {
+          location.href = $store.unapprovedURL;
         } else {
-          next()
+          next();
         }
+      } else {
+        next();
       }
     } else {
-      localStorage.setItem(this.$store.getters.getOAuthState, to.fullPath)
-      location.href = this.$store.getters.getAuthURL
+      localStorage.setItem($store.oAuthState, to.fullPath);
+      location.href = $store.getAuthURL;
     }
   } else {
-    next()
+    next();
   }
 }
