@@ -15,6 +15,7 @@ const useSessionStore = defineStore("session", {
     iframeRef: null,
     showIframe: false,
     unapprovedURL: import.meta.env.VITE_UNAPPROVED_URL,
+    isUserLoading: false,
   }),
 
   getters: {
@@ -56,6 +57,9 @@ const useSessionStore = defineStore("session", {
     },
     setShowIframe(payload) {
       this.showIframe = payload;
+    },
+    setIsUserLoading(payload) {
+      this.isUserLoading = payload;
     },
   },
 });

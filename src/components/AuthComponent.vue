@@ -4,7 +4,7 @@
 
 <script setup>
 import queryString from "query-string";
-import { useSessionStore } from "../store/session.js";
+import useSessionStore from "../store/session.js";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -16,7 +16,6 @@ const sessionStore = useSessionStore();
 const user = computed(() => sessionStore.user);
 const url = computed(() => sessionStore.oAuthServer);
 const accessToken = computed(() => sessionStore.accessToken);
-
 function saveToken() {
   params.value = queryString.parse($route.hash);
   sessionStore.setAccessToken(params.value.access_token);
@@ -33,19 +32,23 @@ function scheduleRefresh() {
 
 function fetchRoles() {
   return axios
-    .get(`${url.value}api/roles`)
+    .get(`${url.value}api/roles`, {
+      headers: { Authorization: `Bearer ${accessToken.value}` },
+    })
     .then((response) => {
       const roles = response.data.roles;
-      const adminStatus = roles.includes(sessionStore.adminRole);
+      // const adminStatus = roles.includes(sessionStore.adminRole);
       sessionStore.setUserRoles(roles);
-      sessionStore.setIsUserAdmin(adminStatus);
+      // sessionStore.setIsUserAdmin(adminStatus);
     })
-    .catch((e) => this.logError(e));
+    .catch((e) => console.log({ e }));
 }
 
 function fetchUser() {
   return axios
-    .get(`${url.value}api/me`)
+    .get(`${url.value}api/me`, {
+      headers: { Authorization: `Bearer ${accessToken.value}` },
+    })
     .then((response) => {
       sessionStore.setUser(response.data);
       sessionStore.setIsUserLoading(false);
@@ -54,32 +57,27 @@ function fetchUser() {
         this.$ma.identify({ userId: this.getUser.username });
       }
     })
-    .catch((e) => this.logError(e));
+    .catch((e) => console.log({ e }));
 }
 
 onMounted(() => {
   saveToken();
   if (sessionStore.accessToken) {
-    Promise.all([fetchRoles(), fetchUser()]).then(() => {
-      if (localStorage.getItem(params.value.state)) {
-        let destination = localStorage.getItem(params.value.state);
-        localStorage.removeItem(params.value.state);
-        $router.push(destination);
-      } else {
-        $router.push("/");
-      }
-    });
+    Promise.all([fetchRoles(), fetchUser()])
+      .then(() => {
+        if (localStorage.getItem(params.value.state)) {
+          let destination = localStorage.getItem(params.value.state);
+          localStorage.removeItem(params.value.state);
+          $router.push(destination);
+        } else {
+          $router.push("/");
+        }
+      })
+      .catch((err) => {
+        console.error("FETCH USER AND ROLES ERROR:", err);
+      });
   }
 });
-// methods: {
-//   ...mapMutations([
-//     "logError",
-//     "setUserRoles",
-//     "setIsUserAdmin",
-//     "setUser",
-//     "setIsUserLoading",
-//     "setShowIframe",
-//   ]),
 </script>
 
 <style></style>

@@ -1,7 +1,6 @@
-import useSessionStore from "../store/session";
-
-const checkRequiresAuth = function (to, from, next) {
-  const sessionStore = useSessionStore();
+import useSessionStore from "../store/session.js";
+export function checkRequiresAuth(to, from, next) {
+  const $store = useSessionStore();
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if ($store.accessToken) {
       if (to.matched.some((route) => route.meta.requiresApproved)) {
@@ -13,6 +12,8 @@ const checkRequiresAuth = function (to, from, next) {
         } else {
           next();
         }
+      } else {
+        next();
       }
     } else {
       localStorage.setItem($store.oAuthState, to.fullPath);
@@ -21,5 +22,4 @@ const checkRequiresAuth = function (to, from, next) {
   } else {
     next();
   }
-};
-export default checkRequiresAuth;
+}

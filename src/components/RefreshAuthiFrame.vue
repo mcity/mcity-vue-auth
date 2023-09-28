@@ -8,7 +8,7 @@ import { computed, onMounted, ref } from "vue";
 import useSessionStore from "../store/session";
 
 const sessionStore = useSessionStore();
-const iframeRef = ref(null);
+const iframeRef = ref(sessionStore.iframeRef);
 const url = ref(null);
 const silentRedirect = computed(() => sessionStore.silentRedirectURI);
 const refreshAuthURL = computed(() => sessionStore.getRefreshAuthURL);
